@@ -30,7 +30,7 @@ const components: PortableTextComponents = {
   },
 };
 
-/** Renders Portable Text (from Sanity or the demo content) with the site's prose styles. */
+/** Renders Portable Text with the site's prose styles. */
 export function RichTextBody({ value, className = "" }: { value: RichText; className?: string }) {
   return (
     <div className={`prose-studio ${className}`}>

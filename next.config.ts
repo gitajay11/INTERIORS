@@ -6,10 +6,7 @@ const nextConfig: NextConfig = {
   partialPrefetching: true,
   images: {
     formats: ["image/avif", "image/webp"],
-    remotePatterns: [
-      { protocol: "https", hostname: "cdn.sanity.io" },
-      { protocol: "https", hostname: "res.cloudinary.com" },
-    ],
+    remotePatterns: [{ protocol: "https", hostname: "res.cloudinary.com" }],
   },
   experimental: {
     // Reference-image uploads on the booking form go through a Server Action.

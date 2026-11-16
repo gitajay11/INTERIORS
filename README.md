@@ -2,7 +2,7 @@
 
 A production-ready marketing site for a luxury interior design studio. Its centrepiece is interactive 3D: a live 3D hero and a **3D Design Studio** where visitors repaint walls, swap floors and furniture, and send the result with a consultation request.
 
-Built with Next.js 16 (App Router, Cache Components), React 19, TypeScript (strict), Tailwind CSS 4, React Three Fiber, Zustand, React Hook Form + Zod, Prisma + PostgreSQL, Sanity and Resend.
+Built with Next.js 16 (App Router, Cache Components), React 19, TypeScript (strict), Tailwind CSS 4, React Three Fiber, Zustand, React Hook Form + Zod, Prisma + PostgreSQL and Resend.
 
 ## Quick start
 
@@ -15,7 +15,6 @@ Open http://localhost:3000. **No environment variables are required to run the s
 
 | Integration | Without configuration | With configuration |
 | --- | --- | --- |
-| Content (Sanity) | Demo content from `lib/data` | Fetched from your dataset |
 | Database (Postgres) | Submissions appended to `.data/*.json` | Saved through Prisma |
 | Email (Resend) | Logged to the server console | Sent to client and studio |
 | Turnstile | Widget and check skipped | Enforced on booking and contact |
@@ -56,11 +55,10 @@ components/
   forms/            BookingForm, ContactForm, NewsletterForm, Calendar, Turnstile
   three/            RoomViewer, CameraRig, RoomScene, Configurator, Hero3D,
                     MaterialSphere, catalog.ts, textures.ts, models/
-lib/                content.ts (CMS access), data/ (demo content), validations.ts,
+lib/                content.ts (content access), data/ (content), validations.ts,
                     design-config.ts, surfaces.ts, storage.ts, email.tsx, spam.ts, seo.ts
 store/              useConfiguratorStore.ts (Zustand, persisted)
 prisma/             schema.prisma
-sanity/             Standalone Sanity Studio with all schemas
 tests/, e2e/        Vitest and Playwright tests
 ```
 
@@ -98,7 +96,7 @@ Everything selectable is declared in `components/three/catalog.ts`.
 
 ### Using real GLB models
 
-Pass `modelUrl` to the viewer (or set **3D model** on a project in Sanity) to render a GLB instead of the procedural room. Put files in `public/models`.
+Pass `modelUrl` to the viewer (or set `model3D` on a project in `lib/data/projects.ts`) to render a GLB instead of the procedural room. Put files in `public/models`.
 
 - Meshes whose name starts with `wall` are recoloured with the chosen paint.
 - Nodes named after a slot (`sofa`, `table`, `chairs`, `rug`, `lamps`, `shelves`, `decor`, or `sofa_…`) are shown and hidden by the furniture toggles.
@@ -112,7 +110,7 @@ KTX2 textures additionally need the Basis transcoder; see the drei `useKTX2` doc
 
 ### Adding a material to the library
 
-Add an entry to `lib/data/materials.ts` (or a **Material** document in Sanity). Its `surface` drives both the swatch thumbnail and the 3D preview sphere. Available patterns: `planks`, `herringbone`, `marble`, `concrete`, `tiles`, `paint`, `fabric`, `stone`, `terrazzo`. To add a pattern, add a sampler to `SAMPLERS` in `lib/surfaces.ts`.
+Add an entry to `lib/data/materials.ts`. Its `surface` drives both the swatch thumbnail and the 3D preview sphere. Available patterns: `planks`, `herringbone`, `marble`, `concrete`, `tiles`, `paint`, `fabric`, `stone`, `terrazzo`. To add a pattern, add a sampler to `SAMPLERS` in `lib/surfaces.ts`.
 
 ### Demo imagery
 
@@ -124,7 +122,7 @@ pnpm render:images            # everything
 pnpm render:images --only=boat-club-residence
 ```
 
-Replace them with real photography by pointing the image paths in `lib/data/projects.ts` (or Sanity) at your files. Team and testimonial portraits are monogram placeholders until a `photo` is supplied.
+Replace them with real photography by pointing the image paths in `lib/data/projects.ts` at your files. Team and testimonial portraits are monogram placeholders until a `photo` is supplied.
 
 ## Database
 
@@ -147,25 +145,9 @@ Set `RESEND_API_KEY`, `EMAIL_FROM` (an address on a domain verified in Resend) a
 
 Every form action runs a honeypot check, a per-IP rate limit (5 requests per 10 minutes) and, when both Turnstile keys are set, a Cloudflare Turnstile verification. The rate limiter is in-memory, so each serverless instance counts separately; swap `lib/rate-limit.ts` for a Redis-backed limiter if you need a hard global limit.
 
-## CMS setup (Sanity)
+## Content
 
-1. Create a project at https://www.sanity.io/manage and note the project id.
-2. Run the bundled studio:
-
-   ```bash
-   cd sanity
-   pnpm install
-   SANITY_STUDIO_PROJECT_ID=yourid pnpm dev
-   ```
-
-3. Add the site's origin under **API → CORS origins**.
-4. In the site's `.env.local`, set `SANITY_PROJECT_ID` and `SANITY_DATASET`.
-
-Schemas (`sanity/schemas/index.ts`): project, service, teamMember, material, testimonial, award, post, category. Field names match the GROQ projections in `lib/content.ts`.
-
-Each content type falls back to the demo data **independently** while its collection is empty, so you can migrate one type at a time. Content is cached and revalidated hourly (`cacheLife("hours")`); new project, service and journal slugs are rendered on first request and then cached. Mood boards are maintained in code because they reference 3D presets.
-
-The Sanity integration has been written against these schemas but not yet exercised against a live dataset; expect to adjust a projection or two when you first connect one.
+All content (projects, services, team, testimonials, awards, materials, journal posts) lives in `lib/data`. Pages read it through `lib/content.ts`, so the source can be swapped for a CMS or database later without touching the pages. Edit the files in `lib/data` and redeploy to change what the site shows.
 
 ## Performance notes
 
@@ -195,5 +177,5 @@ A database is required in production: the JSON fallback cannot write on a server
 ## Things to change before launch
 
 - Studio details, phone, address, hours and social links in `lib/site.ts`.
-- Demo projects, team, testimonials, awards and journal posts (`lib/data` or Sanity).
+- Demo projects, team, testimonials, awards and journal posts (`lib/data`).
 - The `/render` route is an internal tool; it is excluded from indexing but can be deleted once you use real photography.

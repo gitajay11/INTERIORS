@@ -23,8 +23,7 @@ import { PageTransition } from "@/components/layout/PageTransition";
 
 type Props = PageProps<"/projects/[slug]">;
 
-// Prerender every known project at build time; new CMS entries are rendered on
-// first request and then cached (ISR with Cache Components).
+// Prerender every known project at build time.
 export async function generateStaticParams() {
   const projects = await getProjects();
   return projects.map((project) => ({ slug: project.slug }));

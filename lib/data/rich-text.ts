@@ -1,8 +1,8 @@
 import type { RichText } from "@/lib/types";
 
 /**
- * Tiny authoring helper for demo content: turns paragraphs into Portable Text,
- * the same format Sanity returns, so one renderer serves demo and CMS content.
+ * Tiny authoring helper for the bundled content: turns paragraphs into
+ * Portable Text, the format `RichTextBody` renders.
  *
  *   "## Heading"   → h2
  *   "### Heading"  → h3
