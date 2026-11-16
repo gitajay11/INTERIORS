@@ -1,0 +1,342 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ---------------------------------------------------------------------------
+   Design tokens — warm neutrals (ivory, sand, taupe, charcoal) + brass accent.
+   Components only reference the semantic tokens, so light/dark stay in sync.
+--------------------------------------------------------------------------- */
+:root {
+  --bg: #f7f3ec;
+  --surface: #fffdf9;
+  --muted: #ede6da;
+  --border: #ddd3c4;
+  --fg: #2b2926;
+  --fg-muted: #6a6258;
+  --accent: #86642a;
+  --accent-fg: #fffdf9;
+  --olive: #5e6344;
+  --ring: #86642a;
+  --shadow-soft: 0 1px 2px rgb(43 41 38 / 0.04), 0 12px 32px -12px rgb(43 41 38 / 0.14);
+}
+
+.dark {
+  --bg: #171614;
+  --surface: #1f1d1a;
+  --muted: #2a2723;
+  --border: #3a362f;
+  --fg: #efe9dd;
+  --fg-muted: #ada496;
+  --accent: #c9a562;
+  --accent-fg: #171614;
+  --olive: #a3a97f;
+  --ring: #c9a562;
+  --shadow-soft: 0 1px 2px rgb(0 0 0 / 0.3), 0 12px 32px -12px rgb(0 0 0 / 0.6);
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
+  --color-olive: var(--olive);
+  --color-ring: var(--ring);
+  --font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-display), ui-serif, Georgia, serif;
+  --shadow-soft: var(--shadow-soft);
+  --animate-page-in: page-in 0.5s ease-out both;
+  --animate-fade-in: fade-in 0.3s ease-out both;
+  --animate-scroll-hint: scroll-hint 2s ease-in-out infinite;
+}
+
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes grow-x {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+@keyframes scroll-hint {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(10px);
+    opacity: 0.3;
+  }
+}
+
+@layer base {
+  html {
+    scroll-padding-top: 6rem;
+  }
+  /* Native gliding for in-page links where Lenis is off (touch devices). */
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-sans);
+    /* Playfair defaults to old-style figures, which read as typos in prices and years. */
+    font-variant-numeric: lining-nums;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.12;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  ::selection {
+    background: color-mix(in srgb, var(--accent) 30%, transparent);
+  }
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+  button,
+  [role="button"],
+  summary {
+    cursor: pointer;
+  }
+}
+
+@layer components {
+  /* 12-column page grid with responsive gutters */
+  .container-page {
+    width: 100%;
+    max-width: 84rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+  @media (min-width: 768px) {
+    .container-page {
+      padding-inline: 2.5rem;
+    }
+  }
+  .grid-12 {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: 1.5rem;
+  }
+  .eyebrow {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .section {
+    padding-block: 5rem;
+  }
+  @media (min-width: 1024px) {
+    .section {
+      padding-block: 8rem;
+    }
+  }
+  .prose-studio {
+    color: var(--fg);
+    font-size: 1.0625rem;
+    line-height: 1.8;
+  }
+  .prose-studio > * + * {
+    margin-top: 1.25em;
+  }
+  .prose-studio h2 {
+    font-size: 2rem;
+    margin-top: 2em;
+  }
+  .prose-studio h3 {
+    font-size: 1.5rem;
+    margin-top: 1.6em;
+  }
+  .prose-studio a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .prose-studio blockquote {
+    border-left: 2px solid var(--accent);
+    padding-left: 1.25rem;
+    font-family: var(--font-serif);
+    font-size: 1.5rem;
+    line-height: 1.4;
+    font-style: italic;
+  }
+  .prose-studio ul {
+    list-style: disc;
+    padding-left: 1.25rem;
+  }
+  .prose-studio ol {
+    list-style: decimal;
+    padding-left: 1.25rem;
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Lenis smooth scrolling */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* ---------------------------------------------------------------------------
+   Page transitions (View Transitions API, driven by <PageTransition />).
+   The old page leaves quickly; the new one rises in a little more slowly.
+--------------------------------------------------------------------------- */
+::view-transition {
+  pointer-events: none;
+}
+::view-transition-old(.page-exit) {
+  animation: 180ms cubic-bezier(0.4, 0, 1, 1) both vt-fade-out;
+}
+::view-transition-new(.page-enter) {
+  animation:
+    380ms cubic-bezier(0.22, 1, 0.36, 1) 120ms both vt-fade-in,
+    520ms cubic-bezier(0.22, 1, 0.36, 1) 120ms both vt-rise;
+}
+/* The floating header holds still above the moving content. */
+::view-transition-group(site-header) {
+  animation: none;
+  z-index: 100;
+}
+::view-transition-old(site-header) {
+  display: none;
+}
+::view-transition-new(site-header) {
+  animation: none;
+}
+@keyframes vt-fade-out {
+  to {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+@keyframes vt-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes vt-rise {
+  from {
+    transform: translateY(18px);
+  }
+}
+
+/* A project card's image grows into the cover of its detail page. */
+::view-transition-group(.morph) {
+  animation-duration: 480ms;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 50;
+}
+::view-transition-old(.morph),
+::view-transition-new(.morph) {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Tailwind's tabular-nums replaces the inherited lining figures; keep both. */
+.tabular-nums {
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+/* Navigation progress line */
+.nav-progress {
+  opacity: 0;
+  transition: opacity 250ms ease 150ms;
+}
+.nav-progress-bar {
+  transform: scaleX(0);
+}
+.nav-progress[data-phase="loading"] {
+  opacity: 1;
+  transition: none;
+}
+.nav-progress[data-phase="loading"] .nav-progress-bar {
+  animation: nav-progress 8s cubic-bezier(0.1, 0.7, 0.1, 1) forwards;
+}
+.nav-progress[data-phase="done"] {
+  opacity: 1;
+}
+.nav-progress[data-phase="done"] .nav-progress-bar {
+  transform: scaleX(1);
+  transition: transform 200ms ease-out;
+}
+@keyframes nav-progress {
+  from {
+    transform: scaleX(0.05);
+  }
+  to {
+    transform: scaleX(0.9);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

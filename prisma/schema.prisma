@@ -1,0 +1,56 @@
+// Bookings and contact submissions. Content (projects, journal, ...) lives in the CMS.
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum ConsultationStatus {
+  NEW
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+}
+
+model Consultation {
+  id              String             @id @default(cuid())
+  name            String
+  email           String
+  phone           String
+  city            String
+  propertyType    String
+  projectKind     String             // "new" | "renovation"
+  area            Int                // sq.ft
+  budget          String
+  style           String
+  appointmentDate DateTime           @db.Date
+  timeSlot        String
+  mode            String             // "in-studio" | "virtual"
+  notes           String?
+  designConfig    Json?              // configuration from the 3D Studio, if any
+  referenceImage  String?            // original file name of the uploaded reference
+  status          ConsultationStatus @default(NEW)
+  createdAt       DateTime           @default(now())
+
+  @@index([email])
+  @@index([appointmentDate])
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  subject   String
+  message   String
+  createdAt DateTime @default(now())
+}
+
+model NewsletterSubscriber {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+}
