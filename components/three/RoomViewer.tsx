@@ -528,10 +528,10 @@ export default function RoomViewer({
       {orbit && showHints && webgl && (
         <p
           id="room-viewer-hints"
-          className="bg-surface/80 text-fg-muted pointer-events-none absolute top-3 left-3 z-20 hidden rounded-sm px-3 py-1.5 text-[11px] leading-relaxed backdrop-blur sm:block"
+          className="bg-surface/85 text-fg-muted pointer-events-none absolute top-3 left-3 z-20 max-w-[calc(100%-1.5rem)] rounded-sm px-2.5 py-1 text-[10px] leading-relaxed backdrop-blur sm:px-3 sm:py-1.5 sm:text-[11px]"
         >
           {coarsePointer
-            ? "Drag to rotate · Pinch to zoom · Two fingers to move"
+            ? "Drag to rotate · Pinch to zoom"
             : "Drag to rotate · Scroll to zoom · Right-drag to move · R reset · F furniture · 1–4 views"}
         </p>
       )}

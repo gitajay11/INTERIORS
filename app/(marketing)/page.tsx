@@ -5,6 +5,7 @@ import { CtaBanner, SectionHeading } from "@/components/sections/common";
 import { FeaturedCarousel, ProcessTimeline, TestimonialCarousel } from "@/components/sections/home";
 import { Counter, Reveal } from "@/components/sections/motion";
 import { ServicesShowcase } from "@/components/sections/ServicesShowcase";
+import { TrustBar } from "@/components/sections/TrustBar";
 import { HouseTour } from "@/components/three/HouseTour";
 import { Button } from "@/components/ui/button";
 import { getFeaturedProjects, getServices, getTestimonials } from "@/lib/content";
@@ -63,6 +64,9 @@ export default async function HomePage() {
           ))}
         </dl>
       </section>
+
+      {/* ---- Press & Recognition ---- */}
+      <TrustBar />
 
       {/* ---- Featured projects ---- */}
       <section className="section bg-surface" aria-labelledby="featured-title">

@@ -3,9 +3,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense, ViewTransition } from "react";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { BeforeAfter } from "@/components/projects/BeforeAfter";
 import { ProjectMedia } from "@/components/projects/ProjectMedia";
+import { ShareProject } from "@/components/projects/ShareProject";
 import {
   CtaBanner,
   DetailSkeleton,
@@ -15,8 +16,10 @@ import {
 import { RichTextBody } from "@/components/sections/RichTextBody";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { LazyRoomViewer } from "@/components/three/LazyRoomViewer";
+import { Button } from "@/components/ui/button";
 import { SwatchCanvas } from "@/components/ui/SwatchCanvas";
 import { getMaterials, getProject, getProjects } from "@/lib/content";
+import { encodeConfig } from "@/lib/design-config";
 import { breadcrumbJsonLd, pageMetadata, projectJsonLd } from "@/lib/seo";
 import { formatArea } from "@/lib/utils";
 import { PageTransition } from "@/components/layout/PageTransition";
@@ -81,6 +84,8 @@ async function ProjectContent({ params }: Props) {
     ["Style", project.style],
   ];
 
+  const studioQuery = project.design ? encodeConfig(project.design, true) : null;
+
   return (
     <article>
       <JsonLd data={projectJsonLd(project)} />
@@ -94,12 +99,20 @@ async function ProjectContent({ params }: Props) {
 
       {/* ---- Hero ---- */}
       <header className="container-page pt-28 lg:pt-36">
-        <Link
-          href="/projects"
-          className="text-fg-muted hover:text-fg inline-flex min-h-11 items-center gap-2 text-sm"
-        >
-          <ArrowLeft className="size-4" aria-hidden /> All projects
-        </Link>
+        <div className="flex items-center justify-between gap-4">
+          <Link
+            href="/projects"
+            className="text-fg-muted hover:text-fg inline-flex min-h-11 items-center gap-2 text-sm"
+          >
+            <ArrowLeft className="size-4" aria-hidden /> All projects
+          </Link>
+          <ShareProject
+            title={project.title}
+            summary={project.summary}
+            slug={project.slug}
+            image={project.coverImage.src}
+          />
+        </div>
         <p className="eyebrow mt-6">
           {project.type} · {project.category} · {project.year}
         </p>
@@ -211,6 +224,39 @@ async function ProjectContent({ params }: Props) {
           intro="Drag the handle, or use the arrow keys, to compare."
         />
         <BeforeAfter before={project.beforeAfter.before} after={project.beforeAfter.after} />
+      </section>
+
+      {/* ---- Contextual project CTA ---- */}
+      <section
+        className="bg-muted border-border border-t py-16 lg:py-20"
+        aria-labelledby="project-cta-title"
+      >
+        <div className="container-page">
+          <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
+            <div className="max-w-xl">
+              <p className="eyebrow">Your space</p>
+              <h2 id="project-cta-title" className="mt-3 text-3xl md:text-4xl">
+                Inspired by {project.title}?
+              </h2>
+              <p className="text-fg-muted mt-3 leading-relaxed">
+                Every space we create is tailored to its occupants. Book a consultation to discuss your
+                layout, materials, and vision — or experiment with this room in our 3D Studio.
+              </p>
+            </div>
+            <div className="flex flex-wrap items-center gap-3 sm:gap-4">
+              <Button asChild size="lg" variant="accent">
+                <Link href="/book">Book consultation</Link>
+              </Button>
+              {studioQuery && (
+                <Button asChild size="lg" variant="outline">
+                  <Link href={`/studio?${studioQuery}`}>
+                    Customize in 3D Studio <ArrowRight className="size-4" aria-hidden />
+                  </Link>
+                </Button>
+              )}
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* ---- Related ---- */}
