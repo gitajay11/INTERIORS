@@ -1,23 +1,17 @@
 "use client";
 
-/**
- * Gallery, lightbox and floor plan for a project page. They live in one client
- * component because they share state: plan hotspots open the lightbox.
- */
+/** Gallery and lightbox for a project page. */
 import {
   useCallback,
   useEffect,
   useRef,
   useState,
   type PointerEvent as ReactPointerEvent,
-  type ReactNode,
 } from "react";
 import Image from "next/image";
 import { ArrowLeft, ArrowRight, ZoomIn, ZoomOut } from "lucide-react";
-import { FloorPlan } from "@/components/projects/FloorPlan";
 import { Dialog, DialogContent } from "@/components/ui/primitives";
-import type { LayoutId } from "@/components/three/catalog";
-import type { FloorPlanHotspot, ImageAsset } from "@/lib/types";
+import type { ImageAsset } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 // ---------------------------------------------------------------------------
@@ -187,20 +181,9 @@ function Lightbox({
 }
 
 // ---------------------------------------------------------------------------
-// Gallery + floor plan
+// Gallery
 // ---------------------------------------------------------------------------
-export function ProjectMedia({
-  gallery,
-  layout,
-  hotspots,
-  between,
-}: {
-  gallery: ImageAsset[];
-  layout: LayoutId;
-  hotspots: FloorPlanHotspot[];
-  /** Rendered between the gallery and the floor plan (the 3D viewer section). */
-  between?: ReactNode;
-}) {
+export function ProjectMedia({ gallery }: { gallery: ImageAsset[] }) {
   const [open, setOpen] = useState<number | null>(null);
 
   return (
@@ -237,26 +220,6 @@ export function ProjectMedia({
             </li>
           ))}
         </ul>
-      </section>
-
-      {between}
-
-      <section className="container-page section" aria-labelledby="plan-title">
-        <div className="grid-12 gap-y-8">
-          <div className="col-span-12 lg:col-span-4">
-            <p className="eyebrow">Floor plan</p>
-            <h2 id="plan-title" className="mt-3 text-4xl md:text-5xl">
-              How the room is laid out
-            </h2>
-            <p className="text-fg-muted mt-5 leading-relaxed">
-              The plan shows furniture to scale. Numbered points link to photographs taken at that
-              spot.
-            </p>
-          </div>
-          <div className="col-span-12 lg:col-span-8">
-            <FloorPlan layout={layout} hotspots={hotspots} onSelect={setOpen} />
-          </div>
-        </div>
       </section>
 
       <Lightbox

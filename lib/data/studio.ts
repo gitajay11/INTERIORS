@@ -35,7 +35,7 @@ export const team: TeamMember[] = [
     name: "Kavya Rao",
     role: "Head of 3D Visualisation",
     bio: [
-      "Kavya built the studio's real-time 3D pipeline, including the interactive Design Studio on this site. Clients walk through her models long before work begins on site.",
+      "Kavya built the studio's real-time 3D pipeline, Clients walk through her models long before work begins on site.",
       "She holds a master's in computational design from CEPT University.",
     ],
     expertise: ["Real-time 3D", "Lighting studies", "Material simulation"],
@@ -220,7 +220,7 @@ export const philosophy = [
   {
     title: "Seen before built",
     text: "You will walk through your project in 3D before a single order is placed. No surprises on site.",
-    image: "alwarpet-loft/plan",
+    image: "alwarpet-loft/detail",
   },
 ];
 

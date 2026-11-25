@@ -1,8 +1,8 @@
-# Interiors — 3D interior design studio website
+# Interiors — interior design studio website
 
-A production-ready marketing site for a luxury interior design studio. Its centrepiece is interactive 3D: a live 3D hero and a **3D Design Studio** where visitors repaint walls, swap floors and furniture, and send the result with a consultation request.
+A production-ready marketing site for an interior design studio: a scroll-scrubbed video hero, a project portfolio with photo galleries and before/after sliders, services, a materials library, a journal and a booking flow.
 
-Built with Next.js 16 (App Router, Cache Components), React 19, TypeScript (strict), Tailwind CSS 4, React Three Fiber, Zustand, React Hook Form + Zod, Prisma + PostgreSQL and Resend.
+Built with Next.js 16 (App Router, Cache Components), React 19, TypeScript (strict), Tailwind CSS 4, React Hook Form + Zod, Prisma + PostgreSQL and Resend.
 
 ## Quick start
 
@@ -13,27 +13,26 @@ pnpm dev
 
 Open http://localhost:3000. **No environment variables are required to run the site**: every integration has a local fallback.
 
-| Integration | Without configuration | With configuration |
-| --- | --- | --- |
-| Database (Postgres) | Submissions appended to `.data/*.json` | Saved through Prisma |
-| Email (Resend) | Logged to the server console | Sent to client and studio |
-| Turnstile | Widget and check skipped | Enforced on booking and contact |
-| Google Maps | Keyless embed | Embed API |
+| Integration         | Without configuration                  | With configuration              |
+| ------------------- | -------------------------------------- | ------------------------------- |
+| Database (Postgres) | Submissions appended to `.data/*.json` | Saved through Prisma            |
+| Email (Resend)      | Logged to the server console           | Sent to client and studio       |
+| Turnstile           | Widget and check skipped               | Enforced on booking and contact |
+| Google Maps         | Keyless embed                          | Embed API                       |
 
 Copy `.env.example` to `.env.local` and fill in what you need.
 
 ## Scripts
 
-| Command | What it does |
-| --- | --- |
-| `pnpm dev` | Development server |
-| `pnpm build` / `pnpm start` | Production build / serve it |
-| `pnpm lint` / `pnpm typecheck` / `pnpm format` | ESLint / `tsc --noEmit` / Prettier |
-| `pnpm test` | Unit and component tests (Vitest + Testing Library) |
-| `pnpm test:e2e` | Playwright smoke tests against a production build |
-| `pnpm db:push` | Create the tables in the database at `DATABASE_URL` |
-| `pnpm db:studio` | Browse submissions in Prisma Studio |
-| `pnpm render:images` | Re-render the demo imagery from the 3D scenes (needs `pnpm dev` running) |
+| Command                                        | What it does                                        |
+| ---------------------------------------------- | --------------------------------------------------- |
+| `pnpm dev`                                     | Development server                                  |
+| `pnpm build` / `pnpm start`                    | Production build / serve it                         |
+| `pnpm lint` / `pnpm typecheck` / `pnpm format` | ESLint / `tsc --noEmit` / Prettier                  |
+| `pnpm test`                                    | Unit and component tests (Vitest + Testing Library) |
+| `pnpm test:e2e`                                | Playwright smoke tests against a production build   |
+| `pnpm db:push`                                 | Create the tables in the database at `DATABASE_URL` |
+| `pnpm db:studio`                               | Browse submissions in Prisma Studio                 |
 
 Husky runs lint-staged (ESLint + Prettier) on commit. Run `git init` first; the `prepare` script installs the hook.
 
@@ -42,87 +41,34 @@ Husky runs lint-staged (ESLint + Prettier) on commit. Run `git init` first; the 
 ```
 app/
   (marketing)/      Home, about, projects, services, materials, book, journal, contact
-  (studio)/studio   The full-viewport 3D Design Studio (header only, no footer)
   api/availability  Free/taken time slots for the booking form
-  render/           Chrome-free scene renderer used by `pnpm render:images`
   actions.ts        Server Actions: booking, contact, newsletter
   sitemap.ts, robots.ts, opengraph-image.tsx
 components/
   ui/               Button, form fields, Tabs/Accordion/Dialog (Radix, shadcn-style)
   layout/           Header (mega menu), Footer, WhatsAppButton, Providers
   sections/         Page sections and client widgets
-  projects/         Explorer, lightbox, floor plan, before/after slider
+  projects/         Explorer, lightbox, before/after slider
   forms/            BookingForm, ContactForm, NewsletterForm, Calendar, Turnstile
-  three/            RoomViewer, CameraRig, RoomScene, Configurator, Hero3D,
-                    MaterialSphere, catalog.ts, textures.ts, models/
 lib/                content.ts (content access), data/ (content), validations.ts,
-                    design-config.ts, surfaces.ts, storage.ts, email.tsx, spam.ts, seo.ts
-store/              useConfiguratorStore.ts (Zustand, persisted)
+                    surfaces.ts, storage.ts, email.tsx, spam.ts, seo.ts
 prisma/             schema.prisma
 tests/, e2e/        Vitest and Playwright tests
 ```
 
-## The 3D system
+## Home page hero
 
-`<RoomViewer />` (`components/three/RoomViewer.tsx`) is the one viewer used by the hero, project pages and the studio. Always import it through `LazyRoomViewer`, which code-splits three.js and only loads it near the viewport.
+The hero (`components/sections/HeroScrollVideo.tsx`) is a pinned section about four screens tall. Scrolling plays `public/video/scroll_animation_desktop.mp4` forwards and backwards (`scroll_animation_mobile.mp4` on screens under 768 px wide), with a caption for each room. Visitors with reduced motion, a data saver or a very slow connection get a one-screen hero with `public/images/hero.jpg` instead.
 
-- **Controls:** drag to rotate, scroll/pinch to zoom (clamped), right-drag/two fingers to pan (the target cannot leave the room), preset views, reset.
-- **Shortcuts:** `R` reset, `F` toggle furniture, `1`–`4` presets; arrow keys and `+`/`-` when the viewer is focused.
-- **Quality:** a high tier (shadows, contact shadows, ambient occlusion, bloom, tone mapping, SMAA) and a low tier (none of those, lower DPR with `AdaptiveDpr`). The viewer drops to the low tier when frames average under 26 fps. Rendering is on demand, and stops entirely off screen.
-- **Fallbacks:** a still image when WebGL is unavailable or the scene throws.
-- **Lighting tuning (development only):** add `?tune` to any page with a viewer to open a Leva panel, then copy the values into `DEFAULT_LIGHTING` in `RoomScene.tsx`.
-
-The room, furniture and all textures are **procedural**: there are no model, texture or HDRI downloads. Geometry lives in `components/three/models`, PBR texture sets (albedo, normal, roughness) are generated by `lib/surfaces.ts`, and image-based lighting is built from `Lightformer`s.
-
-### The home page walkthrough
-
-The home page hero (`components/three/HouseTour.tsx`) is a scroll-driven walk through a house: up the garden path, through the front door, then living room, kitchen and dining, bedroom and study. The section is several screens tall and its content is pinned, so scrolling moves the camera rather than the page.
-
-- **Looking around:** the route is fixed, but at any point the visitor can turn a full 360°: drag with a mouse (which also tilts up and down), swipe sideways on a touch screen, or press the left and right arrow keys. Vertical swipes and the scroll wheel still walk. Scrolling on, or the **Reset view** button, turns the view back to the route.
-- **Plan and route:** `components/three/tour/plan.ts` holds the rooms (`ROOMS`: position, wall colour, floor, furniture layout, door and window openings), the camera route (`KEYFRAMES`: position and look-at point) and the captions (`STOPS`). Doors shared by two rooms must be listed on both.
-- **Changing a room:** edit its entry in `ROOMS`. Furniture comes from the same layouts as the studio, so `makeConfig` options (variants, hidden pieces, fabric) all work.
-- **Changing the route:** move or add `KEYFRAMES`, then point each stop's `keyframe` at the frame where the camera should rest. Check new positions with `/render?tour=1&at=0.5` (`at` is the scroll fraction, 0–1).
-- **Length:** `LEG_VH` in `HouseTour.tsx` is the scroll distance per room, in viewport heights.
-- **Poster:** `public/images/tour-start.jpg` is shown while the scene loads. Re-render it with `pnpm render:images --only=tour` after changing the exterior.
-- **Fallback:** with no WebGL, reduced motion, data saver or very low-end hardware, the hero is a normal one-screen section with a still image. Phones run the walk without post-processing.
-
-### Adding a paint, floor or furniture variant
-
-Everything selectable is declared in `components/three/catalog.ts`.
-
-- **Paint or upholstery colour:** add an entry to `WALL_SWATCHES` or `FABRIC_SWATCHES`.
-- **Floor:** add an id to `FLOOR_IDS` and an entry to `FLOORS` with a `surface` (pattern, base and accent colours, roughness). It appears in the studio, the URL codec and the store validation automatically.
-- **Furniture variant:** add it to the slot in `FURNITURE`, then render it in `models/furniture.tsx` (for example in `Sofa`'s variant switch).
-
-### Using real GLB models
-
-Pass `modelUrl` to the viewer (or set `model3D` on a project in `lib/data/projects.ts`) to render a GLB instead of the procedural room. Put files in `public/models`.
-
-- Meshes whose name starts with `wall` are recoloured with the chosen paint.
-- Nodes named after a slot (`sofa`, `table`, `chairs`, `rug`, `lamps`, `shelves`, `decor`, or `sofa_…`) are shown and hidden by the furniture toggles.
-- Draco and Meshopt compression are both supported. Keep each file under 5 MB:
-
-```bash
-npx @gltf-transform/cli optimize input.glb public/models/room.glb --compress draco --texture-compress ktx2
-```
-
-KTX2 textures additionally need the Basis transcoder; see the drei `useKTX2` docs. The procedural scene does not use it.
+The scroll length is `SECTION_VH`, and the captions and the progress at which they appear are `STOPS`, both at the top of the file. Scrubbing is smoothest when every frame of the video is a keyframe (`ffmpeg -g 1`).
 
 ### Adding a material to the library
 
-Add an entry to `lib/data/materials.ts`. Its `surface` drives both the swatch thumbnail and the 3D preview sphere. Available patterns: `planks`, `herringbone`, `marble`, `concrete`, `tiles`, `paint`, `fabric`, `stone`, `terrazzo`. To add a pattern, add a sampler to `SAMPLERS` in `lib/surfaces.ts`.
+Add an entry to `lib/data/materials.ts`. Its `surface` draws the swatch image. Available patterns: `planks`, `herringbone`, `marble`, `concrete`, `tiles`, `paint`, `fabric`, `stone`, `terrazzo`. To add a pattern, add a sampler to `SAMPLERS` in `lib/surfaces.ts`.
 
-### Demo imagery
+### Photography
 
-Project photos are rendered from each project's own 3D scene, so stills, viewer and floor plan always agree. After changing a design, the models or the lighting:
-
-```bash
-pnpm dev
-pnpm render:images            # everything
-pnpm render:images --only=boat-club-residence
-```
-
-Replace them with real photography by pointing the image paths in `lib/data/projects.ts` at your files. Team and testimonial portraits are monogram placeholders until a `photo` is supplied.
+The project photographs are free stock images from [Unsplash](https://unsplash.com/license), standing in for real project photography. Each project has seven files in `public/images/projects/<slug>/`: `cover`, `wide`, `detail`, `side`, `view`, `before` and `after` (JPEG, 3:2, 1600 × 1067). Replace them with your own photographs under the same names, and update the captions in `lib/data/projects.ts` (`shots`). Team and testimonial portraits are monogram placeholders until a `photo` is supplied.
 
 ## Database
 
@@ -154,7 +100,6 @@ All content (projects, services, team, testimonials, awards, materials, journal 
 - **Page content is in the first paint.** Each `page.tsx` wraps its content in `<PageTransition>`; keep that wrapper in pages, not layouts. A layout-level wrapper has to sit in a Suspense boundary, and React streams large boundaries in after the first paint, which made the footer flash at the top of every page.
 - **Filterable grids render on the server.** The Projects, Materials and Journal explorers read the query string, so they suspend during the static prerender. Their fallback is the unfiltered view itself rather than a loading message, so the grid is in the HTML and nothing shifts when the live version takes over.
 - **Procedural textures are generated in a Web Worker** (`lib/surface.worker.ts`, used through `lib/surface-client.ts`). Use `loadSurfaceTextures` or `generateSurfaceAsync` for anything that needs more than one surface at a time.
-- **Box geometry is shared.** `Box` in `components/three/models/primitives.tsx` caches one geometry per size. Do not swap it back to drei's `RoundedBox`: building one extruded geometry per box cost seconds of start-up time in the walkthrough.
 - **GSAP and TanStack Query load only where used** (the home page timeline, after load; the booking page).
 - **Start-up timings** for the walkthrough are recorded as User Timing marks (`tour:module-loaded`, `tour:scene-built`, `tour:first-frame-drawn`, `tour:ready`), visible in the Timings track of the DevTools Performance panel.
 - Hero images use `preload` (Next 16 deprecated `priority`).
@@ -163,7 +108,7 @@ All content (projects, services, team, testimonials, awards, materials, journal 
 
 - Per-page metadata and canonical URLs, `sitemap.xml`, `robots.txt`, a generated Open Graph image.
 - JSON-LD: `LocalBusiness` site-wide, `Article` per post, `CreativeWork` per project, `FAQPage` per service, breadcrumbs. schema.org has no `InteriorDesigner` type, so the business is typed `LocalBusiness` + `ProfessionalService`.
-- Skip link, visible focus states, labelled controls, 44 px touch targets, keyboard-operable carousels, lightbox, sliders and 3D viewer, and `prefers-reduced-motion` respected by every animation and by smooth scrolling.
+- Skip link, visible focus states, labelled controls, 44 px touch targets, keyboard-operable carousels, lightbox and sliders, and `prefers-reduced-motion` respected by every animation and by smooth scrolling.
 
 ## Deploying to Vercel
 
@@ -178,4 +123,4 @@ A database is required in production: the JSON fallback cannot write on a server
 
 - Studio details, phone, address, hours and social links in `lib/site.ts`.
 - Demo projects, team, testimonials, awards and journal posts (`lib/data`).
-- The `/render` route is an internal tool; it is excluded from indexing but can be deleted once you use real photography.
+- The stock photographs in `public/images`, the two videos in `public/video` and the studio's address, phone and email are placeholders.

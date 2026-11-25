@@ -66,16 +66,16 @@ function HeroCopy() {
         Spaces Designed <span className="italic">Around You.</span>
       </h1>
       <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/85">
-        We design calm, considered homes and workplaces — and let you walk through them in 3D before
-        a single wall is painted.
+        We design calm, considered homes and workplaces, and plan every detail with you before a
+        single wall is painted.
       </p>
       <div className="mt-9 flex flex-wrap gap-3">
         <Button asChild size="lg" variant="light">
           <Link href="/book">Book Consultation</Link>
         </Button>
         <Button asChild size="lg" variant="outline-light">
-          <Link href="/studio">
-            Explore 3D Studio <ArrowRight aria-hidden />
+          <Link href="/projects">
+            View our projects <ArrowRight aria-hidden />
           </Link>
         </Button>
       </div>
@@ -255,8 +255,8 @@ export function HeroScrollVideo() {
                   {index === STOPS.length - 1 && (
                     <div className="mt-5 flex flex-wrap gap-3">
                       <Button asChild variant="light">
-                        <Link href="/studio">
-                          Design your own room <ArrowRight aria-hidden />
+                        <Link href="/projects">
+                          View our projects <ArrowRight aria-hidden />
                         </Link>
                       </Button>
                       <Button asChild variant="outline-light">

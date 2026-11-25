@@ -19,15 +19,21 @@ export const metadata: Metadata = pageMetadata({
 const studioPhotos = [
   {
     src: "/images/projects/boat-club-residence/wide.jpg",
-    alt: "Living room mock-up in the studio's 3D model",
+    alt: "Timber coffee tables and a knitted pouf on a woven rug",
   },
-  { src: "/images/projects/atlas-capital-office/detail.jpg", alt: "Desk and library wall detail" },
+  {
+    src: "/images/projects/atlas-capital-office/detail.jpg",
+    alt: "Glass-fronted meeting rooms lined in oak",
+  },
   {
     src: "/images/projects/alibaug-villa/side.jpg",
-    alt: "Bedroom suite seen from the window side",
+    alt: "The open-air lounge under the veranda",
   },
-  { src: "/images/projects/the-fig-house/wide.jpg", alt: "Open kitchen and dining room" },
-  { src: "/images/projects/maison-nila-boutique/detail.jpg", alt: "Boutique seating detail" },
+  { src: "/images/projects/the-fig-house/wide.jpg", alt: "The private dining room in dark timber" },
+  {
+    src: "/images/projects/maison-nila-boutique/detail.jpg",
+    alt: "Plaster plinths and a sculpted side table",
+  },
 ];
 
 export default async function AboutPage() {

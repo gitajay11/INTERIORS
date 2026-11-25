@@ -1,9 +1,8 @@
 /**
- * Demo projects. Imagery is rendered from the project's own 3D scene by
- * `pnpm render:images` (see scripts/render-images.ts), so stills, the 3D
- * viewer and the floor plan always describe the same room.
+ * Demo projects. The photographs are stock images (Unsplash) standing in for
+ * real project photography: replace the files in public/images/projects/<slug>/
+ * (keeping the names cover, wide, detail, side, view, before, after).
  */
-import { makeConfig } from "@/components/three/catalog";
 import type { ImageAsset, Project } from "@/lib/types";
 import { blocks } from "./rich-text";
 
@@ -15,8 +14,8 @@ function image(slug: string, name: string, alt: string): ImageAsset {
 
 type Seed = Omit<Project, "coverImage" | "gallery" | "beforeAfter"> & { shots: string[] };
 
-/** The four gallery shots rendered for every project, in order. */
-export const GALLERY_SHOTS = ["wide", "detail", "side", "plan"] as const;
+/** The four gallery photographs for every project, in order. */
+export const GALLERY_SHOTS = ["wide", "detail", "side", "view"] as const;
 
 function build(seed: Seed): Project {
   const { shots, ...project } = seed;
@@ -35,27 +34,6 @@ function build(seed: Seed): Project {
   };
 }
 
-const livingPlan = [
-  { x: 0, z: -1.9, label: "Sofa wall", galleryIndex: 0 },
-  { x: 0, z: -0.4, label: "Coffee table", galleryIndex: 1 },
-  { x: 3.1, z: -1.45, label: "Shelving", galleryIndex: 2 },
-];
-const bedroomPlan = [
-  { x: 0, z: -1.6, label: "Bed wall", galleryIndex: 0 },
-  { x: 0, z: -0.2, label: "Bench", galleryIndex: 1 },
-  { x: 2.4, z: 1.3, label: "Reading corner", galleryIndex: 2 },
-];
-const diningPlan = [
-  { x: 0, z: -2.4, label: "Kitchen run", galleryIndex: 0 },
-  { x: 0, z: 0.55, label: "Dining table", galleryIndex: 1 },
-  { x: 3.1, z: 0.9, label: "Credenza", galleryIndex: 2 },
-];
-const officePlan = [
-  { x: 0, z: -2.5, label: "Library wall", galleryIndex: 0 },
-  { x: 0, z: -0.75, label: "Desk", galleryIndex: 1 },
-  { x: 0, z: 0.75, label: "Guest chairs", galleryIndex: 2 },
-];
-
 export const projects: Project[] = [
   build({
     slug: "boat-club-residence",
@@ -70,16 +48,12 @@ export const projects: Project[] = [
     duration: "7 months",
     budgetRange: "₹60 – 80 lakh",
     style: "Warm Minimal",
-    layout: "living",
-    design: makeConfig({ wall: "#efe9dd", floor: "oak", fabric: "#d8cfbf" }),
-    initialPreset: "corner",
-    floorPlan: livingPlan,
     materials: ["natural-oak", "travertine-classico", "ivory-linen", "oat-boucle", "smoked-teak"],
     shots: [
-      "the living room from the entry",
-      "travertine coffee table detail",
-      "view towards the bookcase",
-      "plan view",
+      "Timber coffee tables and a knitted pouf on a woven rug",
+      "The living room with built-in shelving and a coffered ceiling",
+      "A bouclé chair and sofa beneath a pair of woven mirrors",
+      "Arched windows above the fireplace wall",
     ],
     description: blocks(
       "The clients, a family of four returning to Chennai after a decade abroad, asked for a home that felt settled from the first evening. We began with light: the west-facing window is dressed in unlined sheers so the afternoon sun can reach the back wall.",
@@ -104,29 +78,12 @@ export const projects: Project[] = [
     duration: "5 months",
     budgetRange: "₹35 – 50 lakh",
     style: "Modern Luxe",
-    layout: "living",
-    design: makeConfig({
-      wall: "#b5a696",
-      floor: "herringbone",
-      fabric: "#6b7257",
-      variants: {
-        sofa: "curve",
-        table: "nest",
-        chairs: "frame",
-        lamps: "tripod",
-        shelves: "credenza",
-        decor: "minimal",
-        rug: "jute",
-      },
-    }),
-    initialPreset: "corner",
-    floorPlan: livingPlan,
     materials: ["smoked-herringbone", "soft-taupe", "moss-velvet", "smoked-teak", "nero-marquina"],
     shots: [
-      "curved sofa against the taupe wall",
-      "nesting tables in brass and stone",
-      "the fluted credenza",
-      "plan view",
+      "Open-plan living room looking towards the kitchen",
+      "A moss-green sofa on a herringbone oak floor",
+      "The sectional beneath a tall arc lamp",
+      "A cream-toned living area beside the window wall",
     ],
     description: blocks(
       "At 1,350 sq.ft, this apartment needed furniture that could hold its own without crowding the plan. A single curved sofa replaces the usual sofa-and-loveseat pairing and frees a clear path to the balcony.",
@@ -150,21 +107,12 @@ export const projects: Project[] = [
     duration: "11 months",
     budgetRange: "₹1.4 – 1.8 crore",
     style: "Coastal Contemporary",
-    layout: "bedroom",
-    design: makeConfig({
-      wall: "#a9b19a",
-      floor: "tiles",
-      fabric: "#a79f92",
-      variants: { rug: "jute", decor: "minimal", chairs: "frame" },
-    }),
-    initialPreset: "corner",
-    floorPlan: bedroomPlan,
     materials: ["limestone-honed", "sage-leaf", "stone-linen", "natural-oak", "jute-braid"],
     shots: [
-      "the primary bedroom",
-      "linen bedding and bench",
-      "reading corner by the dresser",
-      "plan view",
+      "The master suite with a limewash feature wall",
+      "The double-height living room seen from above",
+      "The open-air lounge under the veranda",
+      "The pool courtyard and timber pergola",
     ],
     description: blocks(
       "Villa Sagar sits two hundred metres from the water, so every material was chosen for salt air and bare feet. Honed limestone runs from the bedrooms out to the verandah without a threshold.",
@@ -188,21 +136,12 @@ export const projects: Project[] = [
     duration: "4 months",
     budgetRange: "₹28 – 40 lakh",
     style: "Japandi",
-    layout: "dining",
-    design: makeConfig({
-      wall: "#efe9dd",
-      floor: "concrete",
-      fabric: "#3d4350",
-      variants: { table: "slab", decor: "minimal" },
-    }),
-    initialPreset: "corner",
-    floorPlan: diningPlan,
     materials: ["polished-concrete", "calacatta-oro", "natural-oak", "ink-twill", "smoked-teak"],
     shots: [
-      "kitchen run and dining table",
-      "oak table with brass pendants",
-      "towards the credenza",
-      "plan view",
+      "The kitchen island with timber stools",
+      "Stone backsplash and a pendant above the island",
+      "Slate-grey cabinetry with a long island",
+      "The kitchen with a marble waterfall counter",
     ],
     description: blocks(
       "The brief was a kitchen that could host fourteen at Diwali and still feel calm on a Tuesday. We removed the wall to the dining room and ran a single line of cabinetry along the back.",
@@ -226,17 +165,13 @@ export const projects: Project[] = [
     duration: "6 months",
     budgetRange: "₹2.2 – 2.8 crore",
     style: "Contemporary",
-    layout: "office",
-    design: makeConfig({
-      wall: "#4a4743",
-      floor: "walnut",
-      fabric: "#a8663f",
-      variants: { lamps: "tripod", decor: "minimal" },
-    }),
-    initialPreset: "corner",
-    floorPlan: officePlan,
     materials: ["american-walnut", "charcoal", "rust-wool", "smoked-teak", "natural-oak"],
-    shots: ["desk and library wall", "desk detail", "guest seating", "plan view"],
+    shots: [
+      "The partners' lounge in afternoon light",
+      "Glass-fronted meeting rooms lined in oak",
+      "The open-plan floor and breakout lounge",
+      "A reception lounge looking over the city",
+    ],
     description: blocks(
       "Atlas Capital wanted offices that felt closer to a private library than a trading floor. Charcoal walls and walnut floors lower the light level and the voice level with it.",
       "## A wall that works",
@@ -259,15 +194,6 @@ export const projects: Project[] = [
     duration: "4 months",
     budgetRange: "₹70 – 90 lakh",
     style: "Modern Luxe",
-    layout: "living",
-    design: makeConfig({
-      wall: "#c49a7c",
-      floor: "marble",
-      fabric: "#d8cfbf",
-      variants: { sofa: "curve", table: "round", chairs: "club", rug: "jute", shelves: "open" },
-    }),
-    initialPreset: "corner",
-    floorPlan: livingPlan,
     materials: [
       "calacatta-oro",
       "terracotta-clay",
@@ -275,7 +201,12 @@ export const projects: Project[] = [
       "smoked-teak",
       "travertine-classico",
     ],
-    shots: ["the salon", "stone table and seating", "display shelving", "plan view"],
+    shots: [
+      "The main shop floor with hanging rails",
+      "Plaster plinths and a sculpted side table",
+      "A rail of linen garments beside a concrete column",
+      "The wider shop floor",
+    ],
     description: blocks(
       "Maison Nila sells by appointment, so the boutique is planned as a salon rather than a shop floor. Clients sit; the collection comes to them.",
       "## Clay and marble",
@@ -298,21 +229,12 @@ export const projects: Project[] = [
     duration: "8 months",
     budgetRange: "₹1.1 – 1.5 crore",
     style: "Mediterranean",
-    layout: "dining",
-    design: makeConfig({
-      wall: "#d9c9b0",
-      floor: "tiles",
-      fabric: "#a8663f",
-      variants: { table: "round", rug: "jute" },
-    }),
-    initialPreset: "corner",
-    floorPlan: diningPlan,
     materials: ["limestone-honed", "warm-sand", "rust-wool", "terrazzo-avorio", "smoked-teak"],
     shots: [
-      "open kitchen and private dining table",
-      "stone-topped table",
-      "service credenza",
-      "plan view",
+      "The private dining room in dark timber",
+      "The long table laid for dinner",
+      "Upholstered dining chairs along the banquette",
+      "The open kitchen and counter seating",
     ],
     description: blocks(
       "The Fig House occupies a restored Portuguese-era home in Assagao. The private dining room, shown here, seats twelve beside the open kitchen.",
@@ -336,17 +258,13 @@ export const projects: Project[] = [
     duration: "3 months",
     budgetRange: "₹18 – 25 lakh",
     style: "Scandinavian",
-    layout: "bedroom",
-    design: makeConfig({
-      wall: "#b8c4c9",
-      floor: "walnut",
-      fabric: "#3d4350",
-      variants: { lamps: "tripod" },
-    }),
-    initialPreset: "corner",
-    floorPlan: bedroomPlan,
     materials: ["american-walnut", "mist-blue", "ink-twill", "ivory-linen", "wool-loop"],
-    shots: ["the bed wall", "bench and bedding", "armchair by the window", "plan view"],
+    shots: [
+      "The bed and its upholstered bench",
+      "A garden-green bedroom with layered linen",
+      "The suite with its fireplace and seating",
+      "The bedroom window and reading corner",
+    ],
     description: blocks(
       "A renovation of a single room, completed in twelve weeks while the family remained at home. The aim was better sleep: darker floors, softer walls, and no screens.",
       "## Colour for rest",

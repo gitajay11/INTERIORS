@@ -1,5 +1,4 @@
 import { describe, expect, it } from "vitest";
-import { FLOORS, FLOOR_IDS } from "@/components/three/catalog";
 import { filterProjects } from "@/components/projects/ProjectsExplorer";
 import { filterPosts } from "@/components/sections/JournalExplorer";
 import { materials, moodBoards } from "@/lib/data/materials";
@@ -12,20 +11,23 @@ import { rateLimit } from "@/lib/rate-limit";
 import { generateSurface } from "@/lib/surfaces";
 
 describe("procedural surfaces", () => {
-  it.each(FLOOR_IDS)("generates a full PBR set for the %s floor", (id) => {
-    const size = 32;
-    const pixels = generateSurface(FLOORS[id].surface, size);
-    for (const map of [pixels.albedo, pixels.normal, pixels.roughness]) {
-      expect(map).toHaveLength(size * size * 4);
-      expect(map[3]).toBe(255); // opaque
-    }
-    // Normals point mostly "up" out of the surface.
-    expect(pixels.normal[2]).toBeGreaterThan(127);
-  });
+  it.each(materials.map((material) => [material.slug, material.surface] as const))(
+    "generates a full PBR set for %s",
+    (_slug, surface) => {
+      const size = 32;
+      const pixels = generateSurface(surface, size);
+      for (const map of [pixels.albedo, pixels.normal, pixels.roughness]) {
+        expect(map).toHaveLength(size * size * 4);
+        expect(map[3]).toBe(255); // opaque
+      }
+      // Normals point mostly "up" out of the surface.
+      expect(pixels.normal[2]).toBeGreaterThan(127);
+    },
+  );
 
   it("is deterministic", () => {
-    const a = generateSurface(FLOORS.marble.surface, 16);
-    const b = generateSurface(FLOORS.marble.surface, 16);
+    const a = generateSurface(materials[0].surface, 16);
+    const b = generateSurface(materials[0].surface, 16);
     expect(Array.from(a.albedo)).toEqual(Array.from(b.albedo));
   });
 });
@@ -110,8 +112,6 @@ describe("demo content", () => {
     for (const project of projects) {
       for (const slug of project.materials)
         expect(materialSlugs, `${project.slug}: ${slug}`).toContain(slug);
-      for (const spot of project.floorPlan)
-        expect(spot.galleryIndex).toBeLessThan(project.gallery.length);
     }
     for (const board of moodBoards) {
       for (const slug of board.materials)

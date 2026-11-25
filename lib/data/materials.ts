@@ -1,4 +1,3 @@
-import { makeConfig } from "@/components/three/catalog";
 import type { Material, MoodBoard } from "@/lib/types";
 
 const paint = (hex: string) => ({
@@ -314,42 +313,17 @@ export const moodBoards: MoodBoard[] = [
     name: "Warm Minimal",
     description: "Pale oak, ivory walls and bouclé: light, quiet and easy to live with.",
     materials: ["natural-oak", "ivory-linen", "oat-boucle", "travertine-classico", "wool-loop"],
-    design: makeConfig({
-      wall: "#efe9dd",
-      floor: "oak",
-      fabric: "#d8cfbf",
-      variants: { sofa: "lounge", table: "round" },
-    }),
   },
   {
     slug: "modern-luxe",
     name: "Modern Luxe",
     description: "Marble underfoot, clay walls and velvet for rooms that come alive at night.",
     materials: ["calacatta-oro", "terracotta-clay", "moss-velvet", "nero-marquina", "smoked-teak"],
-    design: makeConfig({
-      wall: "#c49a7c",
-      floor: "marble",
-      fabric: "#6b7257",
-      variants: { sofa: "curve", table: "nest", shelves: "credenza", decor: "minimal" },
-    }),
   },
   {
     slug: "japandi",
     name: "Japandi",
     description: "Concrete, dark timber and ink-blue textiles with plenty of empty space.",
     materials: ["polished-concrete", "sage-leaf", "ink-twill", "ebonised-ash", "jute-braid"],
-    design: makeConfig({
-      wall: "#a9b19a",
-      floor: "concrete",
-      fabric: "#3d4350",
-      variants: {
-        sofa: "lounge",
-        table: "slab",
-        chairs: "frame",
-        rug: "jute",
-        lamps: "tripod",
-        decor: "minimal",
-      },
-    }),
   },
 ];

@@ -28,35 +28,6 @@ for (const { path, heading } of pages) {
   });
 }
 
-test("3D studio loads and mirrors the design in the URL", async ({ page }) => {
-  await page.goto("/studio");
-  await expect(page.getByRole("heading", { level: 1, name: /design your room/i })).toBeVisible();
-
-  await page.getByRole("tab", { name: "Floor" }).click();
-  await page.getByRole("button", { name: /american walnut/i }).click();
-  await expect(page).toHaveURL(/floor=walnut/);
-
-  await page.getByRole("tab", { name: "Furniture" }).click();
-  await page.getByRole("button", { name: "Curve", exact: true }).click();
-  await expect(page).toHaveURL(/sofa=curve/);
-
-  // The design survives a reload and feeds the booking link.
-  await page.reload();
-  await expect(page).toHaveURL(/floor=walnut/);
-  await expect(
-    page.getByRole("link", { name: /book consultation with this design/i }),
-  ).toHaveAttribute("href", /design=.*walnut/);
-});
-
-test("a shared studio link restores the design", async ({ page }) => {
-  await page.goto("/studio?floor=marble&sofa=sectional&hide=rug");
-  await page.getByRole("tab", { name: "Floor" }).click();
-  await expect(page.getByRole("button", { name: /calacatta marble/i })).toHaveAttribute(
-    "aria-pressed",
-    "true",
-  );
-});
-
 test("project filters update the URL and the grid", async ({ page }) => {
   await page.goto("/projects");
   await page.getByRole("tab", { name: "commercial" }).click();

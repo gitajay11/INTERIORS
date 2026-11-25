@@ -32,7 +32,6 @@ async function appendLocal<T extends object>(file: string, record: T): Promise<v
 }
 
 export interface ConsultationRecord extends BookingInput {
-  designSummary?: string;
   referenceImage?: string;
 }
 
@@ -59,9 +58,6 @@ export async function saveConsultation(data: ConsultationRecord): Promise<{ id: 
         timeSlot: data.timeSlot,
         mode: data.mode,
         notes: data.notes || null,
-        designConfig: data.designConfig
-          ? { query: data.designConfig, summary: data.designSummary ?? null }
-          : undefined,
         referenceImage: data.referenceImage ?? null,
       },
       select: { id: true },

@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
 import { BookingForm } from "@/components/forms/BookingForm";
 import { QueryProvider } from "@/components/forms/QueryProvider";
 import { PageHeader } from "@/components/sections/common";
@@ -24,12 +23,9 @@ export default function BookPage() {
       />
       <section className="container-page grid-12 gap-y-12 pb-24">
         <div className="col-span-12 lg:col-span-8">
-          {/* Reads ?design= from the 3D Studio, so it renders behind Suspense. */}
-          <Suspense fallback={<div className="bg-muted h-96 animate-pulse rounded-sm" />}>
-            <QueryProvider>
-              <BookingForm />
-            </QueryProvider>
-          </Suspense>
+          <QueryProvider>
+            <BookingForm />
+          </QueryProvider>
         </div>
         <aside className="col-span-12 lg:col-span-3 lg:col-start-10" aria-label="What to expect">
           <div className="lg:sticky lg:top-28">

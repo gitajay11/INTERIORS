@@ -4,7 +4,7 @@ export const site = {
   legalName: "Interiors Design Studio LLP",
   tagline: "Spaces Designed Around You.",
   description:
-    "Interiors is a Chennai-based interior design studio creating calm, considered homes and workplaces around the people who use them. Explore our portfolio and design your own room in our interactive 3D studio.",
+    "Interiors is a Chennai-based interior design studio creating calm, considered homes and workplaces around the people who use them. Explore our portfolio and book a consultation.",
   url: (process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000").replace(/\/$/, ""),
   email: "hello@interiors.example",
   phone: "+91 44 4567 8900",
@@ -48,7 +48,6 @@ export const mainNav = [
   { label: "About", href: "/about" },
   { label: "Projects", href: "/projects", mega: "projects" as const },
   { label: "Services", href: "/services", mega: "services" as const },
-  { label: "3D Studio", href: "/studio" },
   { label: "Materials", href: "/materials" },
   { label: "Journal", href: "/journal" },
   { label: "Contact", href: "/contact" },

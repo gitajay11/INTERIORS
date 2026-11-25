@@ -1,9 +1,8 @@
 /**
  * Web Worker that generates procedural surface textures off the main thread.
  *
- * A 512 px texture set costs 50–110 ms of pure computation. The home page
- * walkthrough needs seven of them, which used to freeze the page for about
- * half a second while the 3D scene started. See `loadSurfaceTextures`.
+ * A 512 px set costs 50–110 ms of pure computation; a page with dozens of
+ * swatches would freeze while they were drawn, so the work happens here.
  */
 import { generateSurface, type SurfaceSpec } from "./surfaces";
 

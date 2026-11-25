@@ -40,7 +40,7 @@ export const posts: Post[] = [
     category: "Material guides",
     publishedAt: "2026-09-12",
     author: "ishita-menon",
-    coverImage: cover("alwarpet-loft/plan", "Smoked oak herringbone floor seen from above"),
+    coverImage: cover("alwarpet-loft/detail", "A moss-green sofa on a herringbone oak floor"),
     featured: false,
     body: blocks(
       "A timber floor is the single largest material decision in most homes, and the hardest to undo. These are the questions we ask clients before recommending one.",
@@ -64,7 +64,7 @@ export const posts: Post[] = [
     category: "Design tips",
     publishedAt: "2026-08-21",
     author: "arjun-nair",
-    coverImage: cover("adyar-kitchen/detail", "Brass pendant lights over a dining table"),
+    coverImage: cover("adyar-kitchen/detail", "A pendant light above a kitchen island"),
     featured: false,
     body: blocks(
       "Lighting is usually decided by the electrician on the day the ceiling goes up. It deserves better. These five problems account for most of the rooms we are asked to rescue.",
@@ -88,7 +88,7 @@ export const posts: Post[] = [
     category: "Project stories",
     publishedAt: "2026-07-30",
     author: "daniel-thomas",
-    coverImage: cover("alibaug-villa/cover", "Bedroom suite at Villa Sagar"),
+    coverImage: cover("alibaug-villa/cover", "Villa Sagar and its pool courtyard"),
     featured: false,
     body: blocks(
       "Two hundred metres from the Arabian Sea, nothing stays new for long. At Villa Sagar we stopped trying to resist the weather and chose materials that improve with it.",
@@ -109,7 +109,7 @@ export const posts: Post[] = [
     category: "Inspiration",
     publishedAt: "2026-06-18",
     author: "kavya-rao",
-    coverImage: cover("atlas-capital-office/wide", "3D visualisation of a partner office"),
+    coverImage: cover("atlas-capital-office/wide", "A partner lounge in afternoon light"),
     featured: false,
     body: blocks(
       "Drawings ask clients to imagine. A real-time model lets them look. Since 2022, no order has left our studio until the client has walked the design in 3D.",
@@ -118,7 +118,7 @@ export const posts: Post[] = [
       "## Honest light",
       "We model the true orientation of every window, so the afternoon sun in the model falls where it will in the finished room.",
       "## Try it yourself",
-      "The 3D Design Studio on this site uses the same approach in miniature. Change the wall colour, swap the floor, try three different sofas — then send us the result with your consultation request.",
+      "If you would like to see your own rooms this way, ask for a walkthrough when you book a consultation: we will show you the model and change the wall colour, the floor or the sofa while you watch.",
     ),
   },
   {
@@ -129,7 +129,10 @@ export const posts: Post[] = [
     category: "Design tips",
     publishedAt: "2026-05-09",
     author: "meera-verano",
-    coverImage: cover("alwarpet-loft/cover", "Compact apartment living room with a curved sofa"),
+    coverImage: cover(
+      "alwarpet-loft/cover",
+      "A compact apartment living room with a white swivel chair",
+    ),
     featured: false,
     body: blocks(
       "Small homes punish indecision. Each of these ideas comes from an apartment under 1,400 sq.ft that we have completed in the past three years.",

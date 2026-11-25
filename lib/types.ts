@@ -1,5 +1,4 @@
 import type { PortableTextBlock } from "@portabletext/react";
-import type { DesignConfig, LayoutId, PresetId } from "@/components/three/catalog";
 import type { SurfaceSpec } from "@/lib/surfaces";
 
 export type RichText = PortableTextBlock[];
@@ -26,15 +25,6 @@ export interface ImageAsset {
   height: number;
 }
 
-export interface FloorPlanHotspot {
-  /** Position on the plan in room metres (x: left→right, z: back→front). */
-  x: number;
-  z: number;
-  label: string;
-  /** Index into the project's gallery opened when the hotspot is clicked. */
-  galleryIndex: number;
-}
-
 export interface Project {
   slug: string;
   title: string;
@@ -52,12 +42,6 @@ export interface Project {
   coverImage: ImageAsset;
   gallery: ImageAsset[];
   beforeAfter: { before: ImageAsset; after: ImageAsset };
-  /** 3D scene: either a GLB url or a procedural layout + design. */
-  model3D?: string;
-  layout: LayoutId;
-  design: DesignConfig;
-  initialPreset: PresetId;
-  floorPlan: FloorPlanHotspot[];
   /** Slugs of materials used. */
   materials: string[];
   description: RichText;
@@ -108,7 +92,7 @@ export interface Material {
   description: string;
   useCases: string[];
   maintenance: string;
-  /** Drives both the swatch thumbnail and the 3D preview sphere. */
+  /** Drives the swatch image. */
   surface: SurfaceSpec;
 }
 
@@ -117,8 +101,6 @@ export interface MoodBoard {
   name: string;
   description: string;
   materials: string[];
-  /** Applied when the board is sent to the 3D Studio. */
-  design: DesignConfig;
 }
 
 export interface Testimonial {

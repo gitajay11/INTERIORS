@@ -130,10 +130,6 @@ export const bookingSchema = bookingStepSchemas[0]
   .extend(bookingStepSchemas[2].shape)
   .extend(bookingStepSchemas[3].shape)
   .extend(bookingStepSchemas[4].shape)
-  .extend({
-    /** Query-string encoded 3D Studio design (see lib/design-config.ts). */
-    designConfig: z.string().max(400).optional(),
-  })
   .refine((data) => slotsForDate(data.appointmentDate).includes(data.timeSlot), {
     path: ["timeSlot"],
     message: "That time is not available on the selected day",

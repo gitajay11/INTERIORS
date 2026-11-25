@@ -141,8 +141,6 @@ export interface ConsultationEmailData {
   timeSlot: string;
   mode: string;
   notes?: string;
-  designSummary?: string;
-  designUrl?: string;
 }
 
 const consultationRows = (data: ConsultationEmailData): [string, string | undefined][] => [
@@ -158,7 +156,6 @@ const consultationRows = (data: ConsultationEmailData): [string, string | undefi
   ["Budget", data.budget],
   ["Preferred style", data.style],
   ["Notes", data.notes],
-  ["3D Studio design", data.designSummary],
 ];
 
 export function ConsultationConfirmationEmail({ data }: { data: ConsultationEmailData }) {
@@ -170,13 +167,6 @@ export function ConsultationConfirmationEmail({ data }: { data: ConsultationEmai
         appointment within one working day.
       </Text>
       <Rows rows={consultationRows(data)} />
-      {data.designUrl && (
-        <Text style={styles.text}>
-          <a href={data.designUrl} style={{ color: "#86642a" }}>
-            Open your 3D Studio design
-          </a>
-        </Text>
-      )}
       <Text style={styles.small}>Reference: {data.id}</Text>
     </Layout>
   );
@@ -192,7 +182,6 @@ export function ConsultationNotificationEmail({ data }: { data: ConsultationEmai
           ["Email", data.email],
           ["Phone", data.phone],
           ...consultationRows(data),
-          ["Design link", data.designUrl],
           ["Reference", data.id],
         ]}
       />

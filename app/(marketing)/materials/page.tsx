@@ -1,12 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 import { CtaBanner, PageHeader, SectionHeading } from "@/components/sections/common";
 import { MaterialsExplorer } from "@/components/sections/MaterialsExplorer";
-import { Button } from "@/components/ui/button";
 import { SwatchCanvas } from "@/components/ui/SwatchCanvas";
 import { getMaterials, getMoodBoards } from "@/lib/content";
-import { encodeConfig } from "@/lib/design-config";
 import { pageMetadata } from "@/lib/seo";
 import { PageTransition } from "@/components/layout/PageTransition";
 
@@ -25,7 +22,7 @@ export default async function MaterialsPage() {
       <PageHeader
         eyebrow="Materials & finishes"
         title="The library behind every room."
-        intro="A working selection from the two thousand samples in our studio. Select a swatch for its origin, finish and care, and to turn it in the light."
+        intro="A working selection from the two thousand samples in our studio. Select a swatch for its origin, finish and care."
       />
       <section className="container-page pb-20" aria-label="Material swatches">
         <MaterialsExplorer materials={materials} />
@@ -36,14 +33,13 @@ export default async function MaterialsPage() {
           <SectionHeading
             eyebrow="Material combinations"
             title={<span id="boards-title">Curated mood boards</span>}
-            intro="Three palettes we return to often. Send one to the 3D Studio to see it in a room."
+            intro="Three palettes we return to often, with the materials in each."
           />
           <ul className="grid gap-8 lg:grid-cols-3">
             {boards.map((board) => {
               const swatches = board.materials
                 .map((slug) => materials.find((material) => material.slug === slug))
                 .filter((material) => material !== undefined);
-              const query = encodeConfig(board.design, true);
               return (
                 <li
                   key={board.slug}
@@ -82,11 +78,6 @@ export default async function MaterialsPage() {
                       </li>
                     ))}
                   </ul>
-                  <Button asChild variant="outline" className="mt-6 self-start">
-                    <Link href={`/studio?${query}`}>
-                      Send to 3D Studio <ArrowRight aria-hidden />
-                    </Link>
-                  </Button>
                 </li>
               );
             })}

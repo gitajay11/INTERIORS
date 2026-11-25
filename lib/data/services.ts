@@ -121,7 +121,7 @@ export const services: Service[] = [
           "A drawing set your contractor can price and build from, plus the 3D model to explore.",
       },
     ],
-    image: img("adyar-kitchen", "plan", "Plan view of a kitchen and dining room"),
+    image: img("adyar-kitchen", "view", "A kitchen with a marble waterfall counter"),
     sampleCategories: ["Kitchen", "Apartment", "Office"],
   },
   {
@@ -153,7 +153,7 @@ export const services: Service[] = [
           "No. You pay trade price plus our stated procurement fee, and you see every invoice.",
       },
     ],
-    image: img("alwarpet-loft", "detail", "Nesting tables and a curved sofa"),
+    image: img("alwarpet-loft", "detail", "A moss-green sofa on a herringbone oak floor"),
     sampleCategories: ["Living", "Apartment", "Retail"],
   },
   {
@@ -186,7 +186,7 @@ export const services: Service[] = [
           "2700K for living spaces and bedrooms, 3000K for kitchens and work areas, always with high colour rendering.",
       },
     ],
-    image: img("adyar-kitchen", "detail", "Brass pendants over an oak dining table"),
+    image: img("adyar-kitchen", "detail", "Stone backsplash and a pendant above a kitchen island"),
     sampleCategories: ["Kitchen", "Hospitality", "Living"],
   },
   {

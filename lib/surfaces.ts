@@ -1,12 +1,12 @@
 /**
  * Procedural PBR surfaces.
  *
- * Instead of shipping texture files, every floor and material swatch is described
+ * Instead of shipping texture files, every material swatch is described
  * by a small `SurfaceSpec` and turned into a tileable albedo / normal / roughness
  * set at runtime. The generator is pure (typed arrays in, typed arrays out), so it
  * runs in the browser, in workers and in unit tests.
  *
- * To use real scanned textures instead, see README → "Adding 3D models & materials".
+ * Only the albedo map is drawn on this site (the material swatches).
  */
 
 export type SurfacePattern =
@@ -39,7 +39,7 @@ export interface SurfacePixels {
   albedo: Uint8ClampedArray<ArrayBuffer>;
   /** RGBA tangent-space normal map. */
   normal: Uint8ClampedArray<ArrayBuffer>;
-  /** RGBA, roughness in every channel (three.js reads green). */
+  /** RGBA, roughness in every channel. */
   roughness: Uint8ClampedArray<ArrayBuffer>;
 }
 

@@ -5,7 +5,6 @@
  *   honeypot → rate limit + Turnstile → Zod validation → save → email.
  * They never throw to the client; failures come back as `{ ok: false, error }`.
  */
-import { decodeConfig, describeConfig } from "@/lib/design-config";
 import {
   ConsultationConfirmationEmail,
   ConsultationNotificationEmail,
@@ -115,12 +114,8 @@ export async function submitConsultation(
       if (problem) return { ok: false, error: problem, fieldErrors: { reference: problem } };
     }
 
-    const design = data.designConfig ? decodeConfig(new URLSearchParams(data.designConfig)) : null;
-    const designSummary = design ? describeConfig(design) : undefined;
-
     const { id } = await saveConsultation({
       ...data,
-      designSummary,
       referenceImage: reference?.name,
     });
     if (reference && !databaseEnabled) await saveLocalUpload(id, reference);
@@ -146,9 +141,6 @@ export async function submitConsultation(
       timeSlot: data.timeSlot,
       mode: data.mode,
       notes: data.notes || undefined,
-      designSummary,
-      designUrl:
-        design && data.designConfig ? `${site.url}/studio?${data.designConfig}` : undefined,
     };
 
     const [emailSent] = await Promise.all([

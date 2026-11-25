@@ -30,7 +30,6 @@ model Consultation {
   timeSlot        String
   mode            String             // "in-studio" | "virtual"
   notes           String?
-  designConfig    Json?              // configuration from the 3D Studio, if any
   referenceImage  String?            // original file name of the uploaded reference
   status          ConsultationStatus @default(NEW)
   createdAt       DateTime           @default(now())

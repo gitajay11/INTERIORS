@@ -165,7 +165,7 @@ export function CtaBanner({
             size="lg"
             className="border-bg/40 text-bg hover:bg-bg/10 border bg-transparent"
           >
-            <Link href="/studio">Try the 3D Studio</Link>
+            <Link href="/projects">See our projects</Link>
           </Button>
         </div>
       </div>

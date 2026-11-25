@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { CtaBanner, SectionHeading } from "@/components/sections/common";
@@ -42,8 +41,8 @@ export default async function HomePage() {
             </p>
             <p className="text-fg-muted mt-5 leading-relaxed">
               We start with light, choose fewer and better things, and use honest materials that
-              improve with age. Then we show you all of it in a real-time 3D model, so the finished
-              room holds no surprises.
+              improve with age. Then we put all of it in front of you, as drawings, samples and
+              mock-ups, so the finished room holds no surprises.
             </p>
             <Link
               href="/about"
@@ -116,39 +115,6 @@ export default async function HomePage() {
             intro="Five stages, each with a clear outcome and your sign-off before the next begins."
           />
           <ProcessTimeline steps={processSteps} />
-        </div>
-      </section>
-
-      {/* ---- 3D Studio teaser ---- */}
-      <section className="container-page section">
-        <div className="grid-12 items-center gap-y-10">
-          <Reveal className="col-span-12 lg:col-span-7">
-            <Link
-              href="/studio"
-              className="group bg-muted relative block aspect-[3/2] overflow-hidden rounded-sm"
-            >
-              <Image
-                src="/images/projects/alwarpet-loft/cover.jpg"
-                alt="A room configured in the 3D Design Studio"
-                fill
-                sizes="(min-width: 1024px) 58vw, 100vw"
-                className="object-cover transition-transform duration-[1200ms] group-hover:scale-105"
-              />
-            </Link>
-          </Reveal>
-          <Reveal delay={0.1} className="col-span-12 lg:col-span-4 lg:col-start-9">
-            <p className="eyebrow">3D Design Studio</p>
-            <h2 className="mt-3 text-4xl md:text-5xl">Design a room yourself.</h2>
-            <p className="text-fg-muted mt-5 leading-relaxed">
-              Repaint the walls, change the floor, try three different sofas. Orbit the room from
-              any angle, then send us the result with your consultation request.
-            </p>
-            <Button asChild size="lg" className="mt-8">
-              <Link href="/studio">
-                Open the studio <ArrowRight aria-hidden />
-              </Link>
-            </Button>
-          </Reveal>
         </div>
       </section>
 

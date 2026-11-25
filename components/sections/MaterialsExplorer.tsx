@@ -2,10 +2,9 @@
 
 /**
  * Materials library: category tabs, swatch grid and a detail drawer with a
- * rotating 3D preview. The open material is mirrored in `?material=`, so
+ * large swatch. The open material is mirrored in `?material=`, so
  * project pages can link straight to a swatch.
  */
-import dynamic from "next/dynamic";
 import {
   usePathname,
   useRouter,
@@ -20,12 +19,6 @@ import { cn } from "@/lib/utils";
 
 /** An empty query string, for rendering the unfiltered view before the real one is known. */
 const NO_PARAMS = new URLSearchParams() as unknown as ReadonlyURLSearchParams;
-
-// three.js is only downloaded when a drawer is first opened.
-const MaterialSphere = dynamic(() => import("@/components/three/MaterialSphere"), {
-  ssr: false,
-  loading: () => <div className="bg-muted aspect-square w-full animate-pulse rounded-sm" />,
-});
 
 /**
  * The filters live in the query string, and reading it suspends during the
@@ -128,7 +121,9 @@ function MaterialsExplorerView({
         <DialogContent side="right" className="p-6 pt-16 sm:p-8 sm:pt-16">
           {selected && (
             <>
-              <MaterialSphere surface={selected.surface} label={`3D preview of ${selected.name}`} />
+              <div className="border-border aspect-square overflow-hidden rounded-sm border">
+                <SwatchCanvas surface={selected.surface} size={512} />
+              </div>
               <p className="eyebrow mt-7">{selected.category}</p>
               <DialogTitle className="mt-2 font-serif text-4xl">{selected.name}</DialogTitle>
               <DialogDescription className="text-fg-muted mt-3 leading-relaxed">

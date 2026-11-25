@@ -9,7 +9,7 @@ vi.mock("@/app/actions", () => ({
   submitConsultation: (...args: unknown[]) => submitConsultation(...args),
 }));
 vi.mock("next/navigation", () => ({
-  useSearchParams: () => new URLSearchParams("design=floor%3Dwalnut%26sofa%3Dcurve"),
+  useSearchParams: () => new URLSearchParams(),
 }));
 
 function renderForm() {
@@ -25,12 +25,6 @@ describe("BookingForm", () => {
   beforeEach(() => {
     submitConsultation.mockReset();
     vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new Error("offline")));
-  });
-
-  it("shows the attached 3D Studio design", () => {
-    renderForm();
-    expect(screen.getByText(/3D Studio design is attached/i)).toBeInTheDocument();
-    expect(screen.getByText(/Floor walnut/)).toBeInTheDocument();
   });
 
   it("does not advance past step one until its fields are valid", async () => {

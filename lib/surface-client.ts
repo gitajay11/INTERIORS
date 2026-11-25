@@ -5,8 +5,7 @@
  * workers are unavailable (old browsers, tests, a blocked worker script) it
  * falls back to generating on the calling thread, so callers never need to care.
  *
- * This module has no three.js dependency: it is used by the 2D swatch
- * thumbnails as well as by the 3D texture cache.
+ * It is used by the 2D swatch thumbnails.
  */
 import { generateSurface, type SurfacePixels, type SurfaceSpec } from "./surfaces";
 import type { SurfaceJob, SurfaceResult } from "./surface.worker";

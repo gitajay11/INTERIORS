@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense, ViewTransition } from "react";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { BeforeAfter } from "@/components/projects/BeforeAfter";
 import { ProjectMedia } from "@/components/projects/ProjectMedia";
 import { ShareProject } from "@/components/projects/ShareProject";
@@ -15,11 +15,9 @@ import {
 } from "@/components/sections/common";
 import { RichTextBody } from "@/components/sections/RichTextBody";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { LazyRoomViewer } from "@/components/three/LazyRoomViewer";
 import { Button } from "@/components/ui/button";
 import { SwatchCanvas } from "@/components/ui/SwatchCanvas";
 import { getMaterials, getProject, getProjects } from "@/lib/content";
-import { encodeConfig } from "@/lib/design-config";
 import { breadcrumbJsonLd, pageMetadata, projectJsonLd } from "@/lib/seo";
 import { formatArea } from "@/lib/utils";
 import { PageTransition } from "@/components/layout/PageTransition";
@@ -83,8 +81,6 @@ async function ProjectContent({ params }: Props) {
     ["Budget", project.budgetRange],
     ["Style", project.style],
   ];
-
-  const studioQuery = project.design ? encodeConfig(project.design, true) : null;
 
   return (
     <article>
@@ -155,36 +151,8 @@ async function ProjectContent({ params }: Props) {
         </div>
       </section>
 
-      {/* ---- Gallery, 3D, floor plan ---- */}
-      <ProjectMedia
-        gallery={project.gallery}
-        layout={project.layout}
-        hotspots={project.floorPlan}
-        between={
-          <section
-            className="bg-surface border-border section border-y"
-            aria-labelledby="viewer-title"
-          >
-            <div className="container-page">
-              <SectionHeading
-                eyebrow="3D visualization"
-                title={<span id="viewer-title">Step inside</span>}
-                intro="Rotate, zoom and move through the room exactly as it was presented to the client."
-              />
-              <LazyRoomViewer
-                className="aspect-[4/5] w-full rounded-sm sm:aspect-[16/10]"
-                config={project.design}
-                layout={project.layout}
-                modelUrl={project.model3D}
-                initialPreset={project.initialPreset}
-                requireActivation
-                fallbackImage={project.coverImage.src}
-                label={`Interactive 3D model of ${project.title}`}
-              />
-            </div>
-          </section>
-        }
-      />
+      {/* ---- Gallery ---- */}
+      <ProjectMedia gallery={project.gallery} />
 
       {/* ---- Materials ---- */}
       {used.length > 0 && (
@@ -239,21 +207,14 @@ async function ProjectContent({ params }: Props) {
                 Inspired by {project.title}?
               </h2>
               <p className="text-fg-muted mt-3 leading-relaxed">
-                Every space we create is tailored to its occupants. Book a consultation to discuss your
-                layout, materials, and vision — or experiment with this room in our 3D Studio.
+                Every space we create is tailored to its occupants. Book a consultation to discuss
+                your layout, materials, and vision.
               </p>
             </div>
             <div className="flex flex-wrap items-center gap-3 sm:gap-4">
               <Button asChild size="lg" variant="accent">
                 <Link href="/book">Book consultation</Link>
               </Button>
-              {studioQuery && (
-                <Button asChild size="lg" variant="outline">
-                  <Link href={`/studio?${studioQuery}`}>
-                    Customize in 3D Studio <ArrowRight className="size-4" aria-hidden />
-                  </Link>
-                </Button>
-              )}
             </div>
           </div>
         </div>

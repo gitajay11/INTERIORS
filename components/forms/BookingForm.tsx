@@ -9,7 +9,6 @@
  */
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
 import { Controller, useForm } from "react-hook-form";
@@ -19,7 +18,6 @@ import { Calendar } from "@/components/forms/Calendar";
 import { Turnstile } from "@/components/forms/Turnstile";
 import { Button } from "@/components/ui/button";
 import { Field, Input, Select, Textarea, fieldProps } from "@/components/ui/form";
-import { decodeConfig, describeConfig } from "@/lib/design-config";
 import {
   BUDGET_RANGES,
   COUNTRY_CODES,
@@ -102,10 +100,6 @@ function ErrorText({ id, message }: { id: string; message?: string }) {
 }
 
 export function BookingForm() {
-  const params = useSearchParams();
-  const designQuery = params.get("design") ?? undefined;
-  const design = designQuery ? decodeConfig(new URLSearchParams(designQuery)) : null;
-
   const [step, setStep] = useState(0);
   const [today, setToday] = useState<string | null>(null);
   const [reference, setReference] = useState<File | null>(null);
@@ -138,7 +132,6 @@ export function BookingForm() {
       appointmentDate: "",
       mode: "in-studio",
       notes: "",
-      designConfig: design ? designQuery : undefined,
     },
   });
 
@@ -220,11 +213,7 @@ export function BookingForm() {
             : "Your request has been saved. "}
           We will confirm your appointment within one working day.
         </p>
-        <Summary
-          values={v}
-          designSummary={design ? describeConfig(design) : undefined}
-          reference={reference?.name}
-        />
+        <Summary values={v} reference={reference?.name} />
         <p className="text-fg-muted mt-6 text-xs">Reference: {success.id}</p>
         <div className="mt-8 flex flex-wrap gap-3">
           <Button asChild>
@@ -295,13 +284,6 @@ export function BookingForm() {
           ][step]
         }
       </h2>
-
-      {design && step === 0 && (
-        <p className="bg-muted mt-6 rounded-sm p-4 text-sm leading-relaxed">
-          <span className="font-medium">Your 3D Studio design is attached.</span>{" "}
-          <span className="text-fg-muted">{describeConfig(design)}</span>
-        </p>
-      )}
 
       <div className="mt-8 min-h-72">
         {/* ---- 1. Client information ---- */}
@@ -654,12 +636,7 @@ export function BookingForm() {
         {/* ---- 6. Review ---- */}
         {step === 5 && (
           <div>
-            <Summary
-              values={values}
-              designSummary={design ? describeConfig(design) : undefined}
-              reference={reference?.name}
-              onEdit={goTo}
-            />
+            <Summary values={values} reference={reference?.name} onEdit={goTo} />
 
             <div className="mt-8">
               <p className="mb-1.5 text-sm font-medium">Reference image (optional)</p>
@@ -756,12 +733,10 @@ export function BookingForm() {
 // ---------------------------------------------------------------------------
 function Summary({
   values,
-  designSummary,
   reference,
   onEdit,
 }: {
   values: Partial<BookingInput>;
-  designSummary?: string;
   reference?: string;
   onEdit?: (step: number) => void;
 }) {
@@ -791,7 +766,6 @@ function Summary({
     ],
   ];
   if (values.notes) rows.push(["Notes", values.notes, 4]);
-  if (designSummary) rows.push(["3D Studio design", designSummary, -1]);
   if (reference && !onEdit) rows.push(["Reference image", reference, -1]);
 
   return (
