@@ -6,7 +6,7 @@ import { FeaturedCarousel, ProcessTimeline, TestimonialCarousel } from "@/compon
 import { Counter, Reveal } from "@/components/sections/motion";
 import { ServicesShowcase } from "@/components/sections/ServicesShowcase";
 import { TrustBar } from "@/components/sections/TrustBar";
-import { HouseTour } from "@/components/three/HouseTour";
+import { HeroScrollVideo } from "@/components/sections/HeroScrollVideo";
 import { Button } from "@/components/ui/button";
 import { getFeaturedProjects, getServices, getTestimonials } from "@/lib/content";
 import { processSteps } from "@/lib/data/studio";
@@ -22,8 +22,8 @@ export default async function HomePage() {
 
   return (
     <PageTransition>
-      {/* ---- Hero: scroll-driven walk through a house ---- */}
-      <HouseTour />
+      {/* ---- Hero: scroll-scrubbed walkthrough video ---- */}
+      <HeroScrollVideo />
 
       {/* ---- Studio introduction ---- */}
       <section id="studio" className="container-page section">
